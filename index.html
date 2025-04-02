@@ -5,68 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI-Powered Lead Generation</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #ff416c, #ff4b2b);
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-        .features {
-            margin-top: 15px;
-        }
-        .feature-item {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 5px;
-            margin: 5px 0;
-            transition: transform 0.3s ease;
-        }
-        .feature-item:hover {
-            transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.3);
-        }
-        .popup, .thank-you {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            color: black;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-        }
-        .popup.show, .thank-you.show {
-            display: block;
-        }
-        .popup input {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-            border: 1px solid #ff416c;
-        }
-        .popup button {
-            background: #ff416c;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .popup button:hover {
-            background: #ff4b2b;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        body { font-family: 'Poppins', sans-serif; text-align: center; padding: 15px; background: black; color: white; overflow-x: hidden; }
+        .container { max-width: 700px; margin: auto; }
+        .features { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 15px; }
+        .feature-item { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.15); padding: 12px; border-radius: 8px; width: 75%; text-align: left; font-size: 16px; font-weight: 500; transition: transform 0.3s ease; }
+        .feature-item:hover { transform: scale(1.05); background: rgba(255, 255, 255, 0.3); }
+        .feature-icon { font-size: 22px; }
+        .popup, .thank-you { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); background: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0px 0px 25px rgba(232, 220, 204, 1); animation: popupFadeIn 0.5s ease-in-out forwards; color: black; width: 90%; max-width: 350px; }
+        .popup.show, .thank-you.show { display: block; }
+        .popup p, .thank-you p { font-size: 18px; font-weight: bold; color: black; }
+        .popup input { width: 85%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ff416c; font-size: 14px; }
+        .popup button { background: linear-gradient(90deg, #e6a927, #e68920); color: white; border: none; padding: 12px 24px; font-size: 18px; border-radius: 8px; cursor: pointer; transition: 0.3s ease; }
+        .popup button:hover { transform: scale(1.1); box-shadow: 0 0 15px rgba(84, 148, 95, 1); }
+        .thank-you img { width: 80px; margin-top: 8px; }
+        @keyframes popupFadeIn { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
     </style>
 </head>
 <body>
@@ -75,10 +28,10 @@
         <p>Capture 1000+ high-converting leads with AI-driven automation.</p>
         <h2>Why Choose Us?</h2>
         <div class="features">
-            <div class="feature-item">🚀 Next-Level AI Outreach to connect with your dream clients.</div>
-            <div class="feature-item">🎯 Laser-Targeted Leads that boost your sales effortlessly.</div>
-            <div class="feature-item">💰 Explosive Conversions & Revenue Growth—Faster than ever.</div>
-            <div class="feature-item">⚡ Save Time, Close Deals, and Automate Your Success.</div>
+            <div class="feature-item"><span class="feature-icon">🚀</span> <span>Next-Level AI Outreach to connect with your dream clients.</span></div>
+            <div class="feature-item"><span class="feature-icon">🎯</span> <span>Laser-Targeted Leads that boost your sales effortlessly.</span></div>
+            <div class="feature-item"><span class="feature-icon">💰</span> <span>Explosive Conversions & Revenue Growth—Faster than ever.</span></div>
+            <div class="feature-item"><span class="feature-icon">⚡</span> <span>Save Time, Close Deals, and Automate Your Success.</span></div>
         </div>
         <p>Ready to grow your business?🚀</p>
         <div class="popup" id="popup">
@@ -113,4 +66,5 @@
         setTimeout(showPopup, 5000);
     </script>
 </body>
-</html>
+</html>  
+
