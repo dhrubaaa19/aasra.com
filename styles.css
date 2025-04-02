@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    padding: 20px;
+    background: #0d0d0d;
+    color: white;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 42px;
+    font-weight: 600;
+    background: linear-gradient(90deg, #ff416c, #ff4b2b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px rgba(255, 75, 43, 0.5);
+}
+
+p {
+    font-size: 18px;
+    opacity: 0.8;
+}
+
+.features {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    width: 80%;
+    text-align: left;
+    font-size: 18px;
+    font-weight: 600;
+    transition: transform 0.3s ease, background 0.3s ease;
+    box-shadow: 0px 0px 10px rgba(255, 75, 43, 0.4);
+}
+
+.feature-item:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0px 0px 20px rgba(255, 75, 43, 0.8);
+}
+
+.popup, .thank-you {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: rgba(20, 20, 20, 0.98);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0px 0px 25px rgba(255, 75, 43, 0.8);
+    animation: popupFadeIn 0.5s ease-in-out forwards;
+    color: white;
+    width: 90%;
+    max-width: 400px;
+}
+
+.popup.show, .thank-you.show {
+    display: block;
+}
+
+.popup p, .thank-you p {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.popup input {
+    width: 85%;
+    padding: 12px;
+    margin: 12px 0;
+    border-radius: 6px;
+    border: 1px solid #ff416c;
+    font-size: 16px;
+    background: #222;
+    color: white;
+    box-shadow: 0px 0px 8px rgba(255, 75, 43, 0.5);
+}
+
+.popup button, .thank-you button {
+    background: linear-gradient(90deg, #ff416c, #ff4b2b);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    font-size: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0px 0px 15px rgba(255, 75, 43, 0.7);
+}
+
+.popup button:hover, .thank-you button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 75, 43, 0.9);
+}
+
+@keyframes popupFadeIn {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
