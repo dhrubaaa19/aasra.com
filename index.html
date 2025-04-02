@@ -37,10 +37,12 @@
         <div class="popup" id="popup">
             <p>Get 1000+ Verified AI-Driven Leads🚀</p>
             <p>Enter Your Details Below:</p>
-            <input type="text" placeholder="Your Name" id="lead-name" required>
-            <input type="email" placeholder="Your Email" id="lead-email" required>
-            <input type="tel" placeholder="Your Contact" id="lead-contact" required>
-            <button onclick="submitLead()">Claim My Leads</button>
+            <form name="google-sheet">
+                <input type="text" placeholder="Your Name" id="lead-name" name="name" required>
+                <input type="email" placeholder="Your Email" id="lead-email" name="email" required>
+                <input type="tel" placeholder="Your Contact" id="lead-contact" name="contact" required>
+                <button type="submit">Claim My Leads</button>
+            </form>
         </div>
         <div class="thank-you" id="thank-you">
             <p>🎉 Thank You, <span id="user-name"></span> 🚀</p>
@@ -49,24 +51,25 @@
         </div>
     </div>
     <script>
-        const scriptURL = "https://script.google.com/macros/s/AKfycby884WtO7pVg9jGSxav0BsG1sodTHAg32ZXRWEcjl3O7Dkbi8SWkn3IE2qT7Xt1si9A/exec";
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxA53inCGm88sCH1UCVNPfbOjXWD5u3kgCPxJJpev8190U15hTgOL6xWKwut4ES1F8h/exec';
         const form = document.forms['google-sheet'];
+
         function showPopup() { document.getElementById("popup").classList.add("show"); }
-        function submitLead() {
-            let name = document.getElementById("lead-name").value;
-            let email = document.getElementById("lead-email").value;
-            let contact = document.getElementById("lead-contact").value;
-            if (name && email && contact) {
-                document.getElementById("popup").classList.remove("show");
-                document.getElementById("user-name").innerText = name;
-                document.getElementById("thank-you").classList.add("show");
-                setTimeout(() => { document.getElementById("thank-you").classList.remove("show"); }, 5000);
-            } else {
-                alert("⚠ Please fill in all fields correctly.");
-            }
-        }
-        setTimeout(showPopup, 5000); 
+        
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+                .then(response => {
+                    document.getElementById("popup").classList.remove("show");
+                    document.getElementById("user-name").innerText = document.getElementById("lead-name").value;
+                    document.getElementById("thank-you").classList.add("show");
+                    setTimeout(() => { document.getElementById("thank-you").classList.remove("show"); }, 5000);
+                    form.reset();
+                })
+                .catch(error => console.error('Error!', error.message));
+        });
+
+        setTimeout(showPopup, 5000);
     </script>
 </body>
-</html>  
-
+</html>
