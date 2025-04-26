@@ -1,96 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-Powered Lead Generation</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-        body { font-family: 'Poppins', sans-serif; text-align: center; padding: 15px; background: black; color: white; overflow-x: hidden; }
-        .container { max-width: 700px; margin: auto; }
-        .features { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 15px; }
-        .feature-item { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.15); padding: 12px; border-radius: 8px; width: 75%; text-align: left; font-size: 16px; font-weight: 500; transition: transform 0.3s ease; }
-        .feature-item:hover { transform: scale(1.05); background: rgba(255, 255, 255, 0.3); }
-        .feature-icon { font-size: 22px; }
-        .popup, .thank-you { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); background: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0px 0px 25px rgba(232, 220, 204, 1); animation: popupFadeIn 0.5s ease-in-out forwards; color: black; width: 90%; max-width: 350px; }
-        .popup.show, .thank-you.show { display: block; }
-        .popup p, .thank-you p { font-size: 18px; font-weight: bold; color: black; }
-        .popup input { width: 85%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ff416c; font-size: 14px; }
-        .popup button { background: linear-gradient(90deg, #e6a927, #e68920); color: white; border: none; padding: 12px 24px; font-size: 18px; border-radius: 8px; cursor: pointer; transition: 0.3s ease; }
-        .popup button:hover { transform: scale(1.1); box-shadow: 0 0 15px rgba(84, 148, 95, 1); }
-        .thank-you img { width: 80px; margin-top: 8px; }
-        @keyframes popupFadeIn { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZustMeal - Delicious Meals Everyday</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+  
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      background-color: rgb(255, 200, 15);
+      color: rgb(240, 30, 40);
+      overflow-x: hidden;
+    }
+    header {
+      text-align: center;
+      padding: 100px 20px;
+    }
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      animation: fadeInUp 1.5s ease;
+    }
+    header p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+    }
+    .cta-button {
+      padding: 15px 30px;
+      background: rgb(240, 30, 40);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      transition: 0.3s;
+    }
+    .cta-button:hover {
+      background: #b50000;
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgb(240, 30, 40);
+    }
+    section {
+      padding: 50px 20px;
+      text-align: center;
+    }
+    .pricing, .features, .testimonials, .faqs, .menu {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      transition: 0.4s;
+    }
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    .faq {
+      text-align: left;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+    .faq-answer {
+      display: none;
+      margin: 10px 0 20px;
+    }
+    .whatsapp-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgb(240, 30, 40);
+      color: white;
+      border-radius: 50%;
+      padding: 15px;
+      font-size: 24px;
+      text-align: center;
+      text-decoration: none;
+      z-index: 999;
+    }
+    /* Today's Special Popup */
+    #popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      color: rgb(240, 30, 40);
+      padding: 30px;
+      border: 5px solid rgb(240, 30, 40);
+      border-radius: 20px;
+      text-align: center;
+      z-index: 1000;
+    }
+    #popup img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    #popup button {
+      background: rgb(240, 30, 40);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      font-size: 1rem;
+      border-radius: 10px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    @keyframes fadeInUp {
+      0% {opacity: 0; transform: translateY(50px);}
+      100% {opacity: 1; transform: translateY(0);}
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Dominate Your Market with AI-Powered Leads 🔥🚀</h1>
-        <p>Capture 1000+ high-converting leads with AI-driven automation.</p>
-        <h2>Why Choose Us?</h2>
-        <div class="features">
-            <div class="feature-item"><span class="feature-icon">🚀</span> <span>Next-Level AI Outreach to connect with your dream clients.</span></div>
-            <div class="feature-item"><span class="feature-icon">🎯</span> <span>Laser-Targeted Leads that boost your sales effortlessly.</span></div>
-            <div class="feature-item"><span class="feature-icon">💰</span> <span>Explosive Conversions & Revenue Growth—Faster than ever.</span></div>
-            <div class="feature-item"><span class="feature-icon">⚡</span> <span>Save Time, Close Deals, and Automate Your Success.</span></div>
-        </div>
-        <p>Ready to grow your business?🚀</p>
 
-        <div class="popup" id="popup">
-            <p>Get 1000+ Verified AI-Driven Leads🚀</p>
-            <p>Enter Your Details Below:</p>
-            <input type="text" placeholder="Your Name" id="lead-name" required>
-            <input type="email" placeholder="Your Email" id="lead-email" required>
-            <input type="tel" placeholder="Your Contact Number" id="lead-contact" required>
-            <input type="tel" placeholder="Your Whatsapp Number" id="lead-whatsapp" required>
-            <button onclick="submitLead()">Claim My Leads</button>
-        </div>
+<header data-aos="fade-up">
+  <h1>Welcome to ZustMeal</h1>
+  <p>Delicious, Homestyle Meals Delivered Fresh Everyday!</p>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1F4C9qhzZFyP1PFd4scx9oMYkw_eqtxNzbD-dw_iYMfBkRQ/viewform?usp=sharing" class="cta-button">Order Now</a>
+</header>
 
-        <div class="thank-you" id="thank-you">
-            <p>🎉 Thank You, <span id="user-name"></span> 🚀</p>
-            <p>Your AI-powered leads are on the way</p>
-            <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Success">
-        </div>
-    </div>
+<section class="menu" id="menu" data-aos="fade-up">
+  <h2>Today's Menu</h2>
+  <div class="card">Butter Paneer Box</div>
+  <div class="card">Chicken Biryani Delight</div>
+  <div class="card">Homestyle Veg Thali</div>
+  <div class="card">Spicy Egg Curry Combo</div>
+</section>
 
-    <script>
-        function showPopup() {
-            document.getElementById("popup").classList.add("show");
-        }
+<section class="pricing" id="pricing" data-aos="fade-up">
+  <h2>Our Pricing</h2>
+  <div class="card">Daily Meal - Rs 120</div>
+  <div class="card">Weekly Plan - Rs 799</div>
+  <div class="card">Monthly Subscription - Rs 2999</div>
+</section>
 
-        function submitLead() {
-            let name = document.getElementById("lead-name").value.trim();
-            let email = document.getElementById("lead-email").value.trim();
-            let contact = document.getElementById("lead-contact").value.trim();
-            let whatsapp = document.getElementById("lead-whatsapp").value.trim();
+<section class="features" id="features" data-aos="fade-up">
+  <h2>Features</h2>
+  <div class="card">Fresh Ingredients</div>
+  <div class="card">Home-cooked</div>
+  <div class="card">Fast Delivery</div>
+  <div class="card">Customizable Meals</div>
+</section>
 
-            if (name && email && contact && whatsapp) {
-                // Yeh IDs sahi hain based on your provided form
-                let formData = new FormData();
-                formData.append("entry.412927767", name);
-                formData.append("entry.1478995014", email);
-                formData.append("entry.1790491938", contact);
-                formData.append("entry.945161907", whatsapp);
+<section class="testimonials" id="testimonials" data-aos="fade-up">
+  <h2>Happy Customers</h2>
+  <div class="card">"Tastes just like home!" - Priya S.</div>
+  <div class="card">"Fast and hot delivery!" - Rohit M.</div>
+  <div class="card">"Best tiffin service ever!" - Anjali R.</div>
+</section>
 
-                fetch("https://docs.google.com/forms/d/e/1FAIpQLSe1F4C9qhzZFyP1PFd4scx9oMYkw_eqtxNzbD-dw_iYMfBkRQ/formResponse", {
-                    method: "POST",
-                    body: formData,
-                    mode: "no-cors"
-                }).then(() => {
-                    document.getElementById("popup").classList.remove("show");
-                    document.getElementById("user-name").innerText = name;
-                    document.getElementById("thank-you").classList.add("show");
-                    setTimeout(() => {
-                        document.getElementById("thank-you").classList.remove("show");
-                    }, 5000);
-                }).catch((error) => {
-                    console.error("Error submitting the form!", error);
-                });
-            } else {
-                alert("⚠ Please fill in all fields correctly.");
-            }
-        }
+<section class="faqs" id="faqs" data-aos="fade-up">
+  <h2>FAQs</h2>
+  <div class="faq" onclick="toggleFAQ(0)">How do I order? <div class="faq-answer">Just click 'Order Now' and fill the form!</div></div>
+  <div class="faq" onclick="toggleFAQ(1)">What are the delivery times? <div class="faq-answer">We deliver lunch and dinner on time, every day.</div></div>
+  <div class="faq" onclick="toggleFAQ(2)">Can I customize my meal? <div class="faq-answer">Absolutely! Tell us your preferences while ordering.</div></div>
+</section>
 
-        setTimeout(showPopup, 5000);
-    </script>
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/919365294816" class="whatsapp-button" target="_blank">💬</a>
+
+<!-- Popup -->
+<div id="popup">
+  <h2>Today's Special!</h2>
+  <img src="https://via.placeholder.com/300x200.png?text=Butter+Chicken" alt="Special">
+  <p>Chef’s Signature Butter Chicken - Only Rs 250!</p>
+  <button onclick="closePopup()">Order Now</button>
+</div>
+
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+
+  function toggleFAQ(index) {
+    var answers = document.querySelectorAll('.faq-answer');
+    answers[index].style.display = answers[index].style.display === 'block' ? 'none' : 'block';
+  }
+
+  // Popup Logic
+  setTimeout(function() {
+    document.getElementById('popup').style.display = 'block';
+  }, 5000);
+
+  function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+  }
+</script>
+
 </body>
-</html>
+</html> 
