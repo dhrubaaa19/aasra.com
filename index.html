@@ -1,205 +1,314 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZustMeal - Delicious Meals Everyday</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZustMeal - Home Cooked Meals</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
-  
-  <!-- AOS Animation Library -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Rotifera Font from Google Fonts alternative -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Playfair Display', serif;
-      background-color: rgb(255, 200, 15);
-      color: rgb(240, 30, 40);
-      overflow-x: hidden;
-    }
-    header {
-      text-align: center;
-      padding: 100px 20px;
-    }
-    header h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-      animation: fadeInUp 1.5s ease;
-    }
-    header p {
-      font-size: 1.2rem;
-      margin-bottom: 40px;
-    }
-    .cta-button {
-      padding: 15px 30px;
-      background: rgb(240, 30, 40);
-      color: #fff;
-      text-decoration: none;
-      border-radius: 10px;
-      font-size: 1.2rem;
-      transition: 0.3s;
-    }
-    .cta-button:hover {
-      background: #b50000;
-      transform: scale(1.05);
-      box-shadow: 0 0 10px rgb(240, 30, 40);
-    }
-    section {
-      padding: 50px 20px;
-      text-align: center;
-    }
-    .pricing, .features, .testimonials, .faqs, .menu {
-      display: grid;
-      gap: 20px;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    }
-    .card {
-      background: white;
-      border-radius: 20px;
-      padding: 20px;
-      transition: 0.4s;
-    }
-    .card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
-    .faq {
-      text-align: left;
-      cursor: pointer;
-      margin: 10px 0;
-    }
-    .faq-answer {
-      display: none;
-      margin: 10px 0 20px;
-    }
-    .whatsapp-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgb(240, 30, 40);
-      color: white;
-      border-radius: 50%;
-      padding: 15px;
-      font-size: 24px;
-      text-align: center;
-      text-decoration: none;
-      z-index: 999;
-    }
-    /* Today's Special Popup */
-    #popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      color: rgb(240, 30, 40);
-      padding: 30px;
-      border: 5px solid rgb(240, 30, 40);
-      border-radius: 20px;
-      text-align: center;
-      z-index: 1000;
-    }
-    #popup img {
-      max-width: 100%;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
-    #popup button {
-      background: rgb(240, 30, 40);
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      font-size: 1rem;
-      border-radius: 10px;
-      margin-top: 10px;
-      cursor: pointer;
-    }
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    @keyframes fadeInUp {
-      0% {opacity: 0; transform: translateY(50px);}
-      100% {opacity: 1; transform: translateY(0);}
-    }
-  </style>
+        body {
+            font-family: 'Playfair Display', serif;
+            background-color: white;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+            transition: background 0.3s;
+            z-index: 1000;
+        }
+
+        nav.scrolled {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav .logo {
+            font-size: 28px;
+            color: rgb(240, 30, 40);
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: rgb(240, 30, 40);
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: rgb(255, 200, 15);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: rgb(240, 30, 40);
+            background: rgba(255,255,255,0.6);
+            padding: 40px;
+            border-radius: 20px;
+        }
+
+        .hero-content h1 {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 22px;
+            margin-bottom: 30px;
+        }
+
+        .hero-content a {
+            background: rgb(255, 200, 15);
+            color: rgb(240, 30, 40);
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .hero-content a:hover {
+            background: rgb(240, 30, 40);
+            color: white;
+        }
+
+        /* About Section */
+        .section {
+            padding: 100px 50px;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 45px;
+            color: rgb(240, 30, 40);
+            margin-bottom: 30px;
+        }
+
+        .section p {
+            font-size: 20px;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Why Choose Us */
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .feature {
+            width: 250px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature h3 {
+            color: rgb(240, 30, 40);
+            margin-bottom: 10px;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: #f9f9f9;
+            padding: 80px 50px;
+        }
+
+        .testimonial {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            color: #555;
+        }
+
+        /* Parallax Section */
+        .parallax {
+            background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836');
+            height: 400px;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .parallax h2 {
+            color: white;
+            font-size: 50px;
+            background: rgba(0,0,0,0.4);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background: #f1f1f1;
+            padding: 40px;
+            text-align: center;
+            color: #555;
+            font-size: 16px;
+        }
+
+        /* WhatsApp Button */
+        .whatsapp {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25d366;
+            color: white;
+            border-radius: 50%;
+            padding: 15px;
+            font-size: 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            text-decoration: none;
+            z-index: 1001;
+        }
+    </style>
 </head>
 
 <body>
 
-<header data-aos="fade-up">
-  <h1>Welcome to ZustMeal</h1>
-  <p>Delicious, Homestyle Meals Delivered Fresh Everyday!</p>
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1F4C9qhzZFyP1PFd4scx9oMYkw_eqtxNzbD-dw_iYMfBkRQ/viewform?usp=sharing" class="cta-button">Order Now</a>
-</header>
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="logo">ZustMeal</div>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#features">Why Us</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+        </ul>
+    </nav>
 
-<section class="menu" id="menu" data-aos="fade-up">
-  <h2>Today's Menu</h2>
-  <div class="card">Butter Paneer Box</div>
-  <div class="card">Chicken Biryani Delight</div>
-  <div class="card">Homestyle Veg Thali</div>
-  <div class="card">Spicy Egg Curry Combo</div>
-</section>
+    <!-- Hero -->
+    <section class="hero">
+        <video autoplay muted loop>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-chef-making-japanese-sushi-roll-1936-large.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+        </video>
+        <div class="hero-content">
+            <h1>ZustMeal</h1>
+            <p>Delicious Home Cooked Meals Delivered Fresh</p>
+            <a href="#menu">Order Now</a>
+        </div>
+    </section>
 
-<section class="pricing" id="pricing" data-aos="fade-up">
-  <h2>Our Pricing</h2>
-  <div class="card">Daily Meal - Rs 120</div>
-  <div class="card">Weekly Plan - Rs 799</div>
-  <div class="card">Monthly Subscription - Rs 2999</div>
-</section>
+    <!-- About Section -->
+    <section id="about" class="section">
+        <h2>About ZustMeal</h2>
+        <p>We believe in transparency and hygiene. Enjoy the taste of homemade meals made with love, available with live kitchen access!</p>
+    </section>
 
-<section class="features" id="features" data-aos="fade-up">
-  <h2>Features</h2>
-  <div class="card">Fresh Ingredients</div>
-  <div class="card">Home-cooked</div>
-  <div class="card">Fast Delivery</div>
-  <div class="card">Customizable Meals</div>
-</section>
+    <!-- Why Choose Us -->
+    <section id="features" class="section">
+        <h2>Why Choose ZustMeal?</h2>
+        <div class="features">
+            <div class="feature">
+                <h3>Home Cooked</h3>
+                <p>Fresh meals prepared just like home.</p>
+            </div>
+            <div class="feature">
+                <h3>Live Kitchen Access</h3>
+                <p>Watch your food being cooked live!</p>
+            </div>
+            <div class="feature">
+                <h3>Fast Delivery</h3>
+                <p>Hot meals delivered quickly to your doorstep.</p>
+            </div>
+            <div class="feature">
+                <h3>Affordable Plans</h3>
+                <p>Daily and Monthly Subscription options.</p>
+            </div>
+        </div>
+    </section>
 
-<section class="testimonials" id="testimonials" data-aos="fade-up">
-  <h2>Happy Customers</h2>
-  <div class="card">"Tastes just like home!" - Priya S.</div>
-  <div class="card">"Fast and hot delivery!" - Rohit M.</div>
-  <div class="card">"Best tiffin service ever!" - Anjali R.</div>
-</section>
+    <!-- Parallax Section -->
+    <section class="parallax">
+        <h2>Pure, Fresh & Transparent</h2>
+    </section>
 
-<section class="faqs" id="faqs" data-aos="fade-up">
-  <h2>FAQs</h2>
-  <div class="faq" onclick="toggleFAQ(0)">How do I order? <div class="faq-answer">Just click 'Order Now' and fill the form!</div></div>
-  <div class="faq" onclick="toggleFAQ(1)">What are the delivery times? <div class="faq-answer">We deliver lunch and dinner on time, every day.</div></div>
-  <div class="faq" onclick="toggleFAQ(2)">Can I customize my meal? <div class="faq-answer">Absolutely! Tell us your preferences while ordering.</div></div>
-</section>
+    <!-- Testimonials -->
+    <section id="testimonials" class="testimonials">
+        <h2>What Our Customers Say</h2>
+        <div class="testimonial">"ZustMeal meals taste just like home! 5 stars!"</div>
+        <div class="testimonial">"I love watching live how my food is prepared. Best innovation!"</div>
+        <div class="testimonial">"Highly recommended for students like me. Affordable and yummy."</div>
+    </section>
 
-<!-- WhatsApp Floating Button -->
-<a href="https://wa.me/919365294816" class="whatsapp-button" target="_blank">💬</a>
+    <!-- Footer -->
+    <footer>
+        &copy; 2025 ZustMeal. All rights reserved.
+    </footer>
 
-<!-- Popup -->
-<div id="popup">
-  <h2>Today's Special!</h2>
-  <img src="https://via.placeholder.com/300x200.png?text=Butter+Chicken" alt="Special">
-  <p>Chef’s Signature Butter Chicken - Only Rs 250!</p>
-  <button onclick="closePopup()">Order Now</button>
-</div>
+    <!-- WhatsApp Button -->
+    <a class="whatsapp" href="https://wa.me/yourwhatsapplink" target="_blank">&#x1F4AC;</a>
 
-<!-- AOS JS -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init();
-
-  function toggleFAQ(index) {
-    var answers = document.querySelectorAll('.faq-answer');
-    answers[index].style.display = answers[index].style.display === 'block' ? 'none' : 'block';
-  }
-
-  // Popup Logic
-  setTimeout(function() {
-    document.getElementById('popup').style.display = 'block';
-  }, 5000);
-
-  function closePopup() {
-    document.getElementById('popup').style.display = 'none';
-  }
-</script>
+    <script>
+        // Navbar Scroll Change
+        window.addEventListener('scroll', function() {
+            var navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
 
 </body>
-</html> 
+</html>
