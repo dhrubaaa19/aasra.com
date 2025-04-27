@@ -2,18 +2,157 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ZustMeal - Fresh & Hygienic Tiffins</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Rotifera:wght@400;600&display=swap');
+  <title>ZustMeal - Live Kitchen Meals</title>
 
+  <!-- Fonts & AOS Library -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    /* Basic Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      margin: 0;
       font-family: 'Rotifera', serif;
-      background: #ffffff;
+      background: #fff;
+      color: rgb(240,30,40);
+      overflow-x: hidden;
+    }
+    header {
+      background-color: rgb(255, 200, 15);
       color: rgb(240, 30, 40);
-      scroll-behavior: smooth;
+      text-align: center;
+      padding: 20px;
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .hero video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 20px 30px;
+      border-radius: 10px;
+    }
+    .hero-content h1 {
+      font-size: 3rem;
+      color: rgb(240, 30, 40);
+    }
+    section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+    form {
+      background: #f9f9f9;
+      padding: 30px;
+      margin: 30px auto;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, textarea {
+      width: 90%;
+      margin: 10px 0;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background: rgb(240, 30, 40);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 15px;
+    }
+    button:hover {
+      background: rgb(200, 0, 0);
+    }
+    footer {
+      margin-top: 50px;
+      padding: 20px;
+      background: rgb(255, 200, 15);
+      color: rgb(240, 30, 40);
+      text-align: center;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  ZustMeal - Fresh Live Meals
+</header>
+
+<!-- Hero Section with Background Video -->
+<div class="hero">
+  <video autoplay muted loop playsinline>
+    <source src="C:\Users\Admin\Downloads\istockphoto-1159778404-640_adpp_is.mp4" type="video/mp4">
+  </video>
+  <div class="hero-content" data-aos="zoom-in">
+    <h1>Experience the Purity of Live Kitchens 🍽️</h1>
+  </div>
+</div>
+
+<!-- Order Section -->
+<section data-aos="fade-up">
+  <h2 style="margin-bottom: 20px;">Order Your Meal Now!</h2>
+  <form name="google-sheet">
+    <input type="text" name="name" placeholder="Your Name" required><br>
+    <input type="email" name="email" placeholder="Your Email" required><br>
+    <input type="tel" name="phone" placeholder="Your Phone" required><br>
+    <textarea name="message" placeholder="Any Special Instructions?"></textarea><br>
+    <button type="submit">Order Now</button>
+  </form>
+</section>
+
+<footer>
+  © 2025 ZustMeal | Made with ❤️ for Food Lovers
+</footer>
+
+<!-- JavaScript to Handle Form Submit -->
+<script>
+const scriptURL = 'YOUR_DEPLOYED_WEB_APP_URL_HERE';
+const form = document.forms['google-sheet'];
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+    .then(response => {
+      alert("Thanks for Ordering! We'll Get Back Soon 🍽️");
+      form.reset();
+    })
+    .catch(error => console.error('Error!', error.message));
+});
+</script>
+
+<!-- AOS Animation JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1000,
+    once: true
+  });
+</script>
+
+</body>
+</html>
+
     }
 
     header {
