@@ -1,35 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>OCR Camera Upload + Export</title>
+  <title>OCR App - Offline with Tesseract</title>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
       padding: 20px;
-      background: #f5f5f5;
+      background: #f4f6f8;
+      color: #333;
     }
-    h2 {
+    h1 {
+      font-size: 24px;
       margin-bottom: 10px;
     }
-    label, button {
+    p {
+      margin-bottom: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    label, select, button {
       display: inline-block;
       margin-top: 10px;
-      padding: 12px 20px;
+      padding: 12px 16px;
       font-size: 16px;
       border-radius: 6px;
-      cursor: pointer;
       border: none;
       margin-right: 10px;
     }
     label {
       background-color: #007bff;
       color: white;
+      cursor: pointer;
+    }
+    input[type="file"] {
+      display: none;
+    }
+    select {
+      background: #fff;
+      border: 1px solid #ccc;
     }
     button {
       background-color: #00c853;
       color: white;
+      cursor: pointer;
     }
     button.secondary {
       background-color: #ff9800;
@@ -37,96 +60,104 @@
     button.danger {
       background-color: #f44336;
     }
-    input[type="file"] {
-      display: none;
-    }
     #output {
       white-space: pre-wrap;
-      background: #fff;
+      background: #f9f9f9;
       padding: 15px;
       border-radius: 8px;
-      margin-top: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      min-height: 100px;
+      min-height: 120px;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-top: 10px;
+      border: 1px solid #ddd;
     }
   </style>
 </head>
 <body>
 
-  <h2>📷 OCR Camera + Export Tools</h2>
-  <p>Take a picture to extract and export text.</p>
+  <div class="card">
+    <h1>📷 Offline OCR Scanner</h1>
+    <p>Capture image, select language, and extract text right in your browser — no server, no limits.</p>
 
-  <label for="cameraInput">📸 Open Camera</label>
-  <input type="file" id="cameraInput" accept="image/*" capture="environment">
+    <input type="file" id="cameraInput" accept="image/*" capture="environment">
+    <label for="cameraInput">📸 Take Photo</label>
 
-  <div id="output">Result will appear here...</div>
-
-  <div style="margin-top: 20px;">
-    <button onclick="copyText()">📋 Copy</button>
-    <button class="secondary" onclick="downloadCSV()">⬇️ CSV</button>
-    <button class="danger" onclick="downloadPDF()">📄 PDF</button>
+    <select id="languageSelect">
+      <option value="eng">English</option>
+      <option value="hin">Hindi</option>
+      <option value="tam">Tamil</option>
+      <option value="tel">Telugu</option>
+      <option value="kan">Kannada</option>
+      <option value="mar">Marathi</option>
+      <option value="ben">Bengali</option>
+      <option value="guj">Gujarati</option>
+    </select>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <div class="card">
+    <h2>📝 Extracted Text</h2>
+    <div id="output">Waiting for image...</div>
+
+    <div style="margin-top: 15px;">
+      <button onclick="copyText()">📋 Copy</button>
+      <button class="secondary" onclick="downloadCSV()">⬇️ CSV</button>
+      <button class="danger" onclick="downloadPDF()">📄 PDF</button>
+    </div>
+  </div>
+
   <script>
-    const cameraInput = document.getElementById('cameraInput');
+    const input = document.getElementById('cameraInput');
     const output = document.getElementById('output');
+    const langSelect = document.getElementById('languageSelect');
+    let ocrText = '';
 
-    let ocrText = ''; // to reuse for exports
-
-    cameraInput.addEventListener('change', async function () {
-      const file = cameraInput.files[0];
+    input.addEventListener('change', function () {
+      const file = input.files[0];
       if (!file) return;
 
-      output.textContent = '⏳ Scanning...';
+      output.textContent = '⏳ Scanning... Please wait.';
+      const lang = langSelect.value;
 
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('language', 'eng');
-      formData.append('apikey', 'K81240037988957');  // 🔁 Replace with your OCR.space API key
-
-      try {
-        const response = await fetch('https://api.ocr.space/parse/image', {
-          method: 'POST',
-          body: formData
-        });
-        const result = await response.json();
-
-        if (result.IsErroredOnProcessing) {
-          output.textContent = '❌ Error: ' + result.ErrorMessage;
-        } else {
-          ocrText = result.ParsedResults[0].ParsedText || 'No text found.';
-          output.textContent = ocrText;
+      Tesseract.recognize(
+        file,
+        lang,
+        {
+          logger: m => console.log(m)
         }
-      } catch (error) {
-        output.textContent = '❌ Network or API error.';
-        console.error(error);
-      }
+      ).then(({ data: { text } }) => {
+        ocrText = text;
+        output.textContent = text || '❌ No text found.';
+      }).catch(err => {
+        output.textContent = '❌ OCR Error: ' + err.message;
+      });
     });
 
     function copyText() {
+      if (!ocrText) return;
       navigator.clipboard.writeText(ocrText).then(() => {
-        alert('✅ Text copied to clipboard!');
-      }).catch(err => {
-        alert('❌ Copy failed.');
+        alert("✅ Text copied to clipboard!");
+      }).catch(() => {
+        alert("❌ Failed to copy text.");
       });
     }
 
     function downloadCSV() {
-      const csvContent = `"Extracted Text"\n"${ocrText.replace(/"/g, '""')}"`;
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement("a");
+      if (!ocrText) return;
+      const csv = `"Extracted Text"\n"${ocrText.replace(/"/g, '""')}"`;
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = "ocr-result.csv";
+      link.download = 'ocr-text.csv';
       link.click();
     }
 
-    async function downloadPDF() {
+    function downloadPDF() {
+      if (!ocrText) return;
       const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF();
-      const splitText = pdf.splitTextToSize(ocrText, 180);
-      pdf.text(splitText, 10, 20);
-      pdf.save("ocr-result.pdf");
+      const doc = new jsPDF();
+      const lines = doc.splitTextToSize(ocrText, 180);
+      doc.text(lines, 10, 20);
+      doc.save('ocr-text.pdf');
     }
   </script>
 
