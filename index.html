@@ -1,165 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>OCR App - Offline with Tesseract</title>
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <meta charset="UTF-8">
+  <title>OCR Scanner</title>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: #f4f6f8;
-      color: #333;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 30px;
+      background: #f2f2f2;
     }
-    h1 {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-    p {
-      margin-bottom: 20px;
-    }
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      margin-bottom: 20px;
-    }
-    label, select, button {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 12px 16px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: none;
-      margin-right: 10px;
-    }
-    label {
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-    }
-    input[type="file"] {
-      display: none;
-    }
-    select {
-      background: #fff;
+    #imagePreview {
+      max-width: 100%;
+      height: auto;
       border: 1px solid #ccc;
+      margin: 20px 0;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin-top: 20px;
+      padding: 10px;
+      font-size: 16px;
     }
     button {
-      background-color: #00c853;
-      color: white;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
       cursor: pointer;
-    }
-    button.secondary {
-      background-color: #ff9800;
-    }
-    button.danger {
-      background-color: #f44336;
-    }
-    #output {
-      white-space: pre-wrap;
-      background: #f9f9f9;
-      padding: 15px;
-      border-radius: 8px;
-      min-height: 120px;
-      font-size: 15px;
-      line-height: 1.6;
-      margin-top: 10px;
-      border: 1px solid #ddd;
     }
   </style>
 </head>
 <body>
+  <h2>🧠 Text Scanner (OCR)</h2>
 
-  <div class="card">
-    <h1>📷 Offline OCR Scanner</h1>
-    <p>Capture image, select language, and extract text right in your browser — no server, no limits.</p>
+  <!-- Upload -->
+  <input type="file" accept="image/*" onchange="loadImage(event)">
+  <button onclick="startCamera()">📸 Use Camera</button>
 
-    <input type="file" id="cameraInput" accept="image/*" capture="environment">
-    <label for="cameraInput">📸 Take Photo</label>
+  <br><br>
 
-    <select id="languageSelect">
-      <option value="eng">English</option>
-      <option value="hin">Hindi</option>
-      <option value="tam">Tamil</option>
-      <option value="tel">Telugu</option>
-      <option value="kan">Kannada</option>
-      <option value="mar">Marathi</option>
-      <option value="ben">Bengali</option>
-      <option value="guj">Gujarati</option>
-    </select>
-  </div>
+  <video id="camera" autoplay style="display:none; width:100%; max-width:400px;"></video>
+  <canvas id="canvas" style="display:none;"></canvas>
+  <button id="captureBtn" style="display:none;" onclick="capturePhoto()">📸 Capture</button>
 
-  <div class="card">
-    <h2>📝 Extracted Text</h2>
-    <div id="output">Waiting for image...</div>
+  <img id="imagePreview" src="#" alt="Preview" style="display:none;"/>
 
-    <div style="margin-top: 15px;">
-      <button onclick="copyText()">📋 Copy</button>
-      <button class="secondary" onclick="downloadCSV()">⬇️ CSV</button>
-      <button class="danger" onclick="downloadPDF()">📄 PDF</button>
-    </div>
-  </div>
+  <br>
+  <button onclick="runOCR()">🔍 Scan Image</button>
+
+  <textarea id="outputText" placeholder="Detected text will appear here..."></textarea>
+  <br>
+  <button onclick="copyText()">📋 Copy Text</button>
 
   <script>
-    const input = document.getElementById('cameraInput');
-    const output = document.getElementById('output');
-    const langSelect = document.getElementById('languageSelect');
-    let ocrText = '';
+    let imageData = null;
 
-    input.addEventListener('change', function () {
-      const file = input.files[0];
-      if (!file) return;
+    function loadImage(event) {
+      const image = document.getElementById('imagePreview');
+      image.src = URL.createObjectURL(event.target.files[0]);
+      image.style.display = 'block';
+      imageData = event.target.files[0];
+    }
 
-      output.textContent = '⏳ Scanning... Please wait.';
-      const lang = langSelect.value;
+    function runOCR() {
+      if (!imageData && !document.getElementById('imagePreview').src.includes('blob')) {
+        alert("Please upload or capture an image first.");
+        return;
+      }
 
+      document.getElementById('outputText').value = "⏳ Scanning...";
       Tesseract.recognize(
-        file,
-        lang,
+        document.getElementById('imagePreview').src,
+        'eng', // Language (you can change to 'hin' for Hindi, etc.)
         {
           logger: m => console.log(m)
         }
       ).then(({ data: { text } }) => {
-        ocrText = text;
-        output.textContent = text || '❌ No text found.';
-      }).catch(err => {
-        output.textContent = '❌ OCR Error: ' + err.message;
+        document.getElementById('outputText').value = text;
       });
-    });
+    }
 
     function copyText() {
-      if (!ocrText) return;
-      navigator.clipboard.writeText(ocrText).then(() => {
-        alert("✅ Text copied to clipboard!");
-      }).catch(() => {
-        alert("❌ Failed to copy text.");
-      });
+      const text = document.getElementById("outputText").value;
+      navigator.clipboard.writeText(text);
+      alert("✅ Text copied!");
     }
 
-    function downloadCSV() {
-      if (!ocrText) return;
-      const csv = `"Extracted Text"\n"${ocrText.replace(/"/g, '""')}"`;
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'ocr-text.csv';
-      link.click();
+    function startCamera() {
+      const video = document.getElementById('camera');
+      const captureBtn = document.getElementById('captureBtn');
+      video.style.display = 'block';
+      captureBtn.style.display = 'inline-block';
+
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          video.srcObject = stream;
+        })
+        .catch(err => {
+          alert("Camera access denied.");
+        });
     }
 
-    function downloadPDF() {
-      if (!ocrText) return;
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      const lines = doc.splitTextToSize(ocrText, 180);
-      doc.text(lines, 10, 20);
-      doc.save('ocr-text.pdf');
+    function capturePhoto() {
+      const canvas = document.getElementById('canvas');
+      const video = document.getElementById('camera');
+      const image = document.getElementById('imagePreview');
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0);
+
+      const dataURL = canvas.toDataURL();
+      image.src = dataURL;
+      image.style.display = 'block';
+
+      // Stop camera
+      const stream = video.srcObject;
+      const tracks = stream.getTracks();
+      tracks.forEach(track => track.stop());
+      video.style.display = 'none';
+      document.getElementById('captureBtn').style.display = 'none';
+
+      imageData = dataURL;
     }
   </script>
-
 </body>
 </html>
